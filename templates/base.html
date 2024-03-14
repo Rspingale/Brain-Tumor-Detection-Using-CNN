@@ -1,0 +1,83 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Brain Tumor Detection Web App</title>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">      
+</head>
+
+<body>
+    <nav class="navbar navbar-dark " style="background-color: #003366;">
+        <div class="container">
+            <a class="navbar-brand" href="https://mitaoe.ac.in/">
+                <img src="https://mitaoe.ac.in/assets/images/MITAOE-logo.webp" alt="MIT Academy of Engineering Logo"  style="width: 100px;">
+                MIT Acadamy of Engineearing
+            </a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div id="content" style="margin-top:1em">{% block content %}{% endblock %}</div>
+    </div>
+</body>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-primary mb-3">
+                    <div class="card-header bg-primary text-white">Project Team</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Developers</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-user mr-2"></i> <a href="mailto:rupesh.pingale@mitaoe.ac.in">Rupesh Pingale</a></li>
+                            <li><i class="fas fa-user mr-2"></i> <a href="mailto:Sanket.Yadav@mitaoe.ac.in">Sanket Yadav</a></li>
+                            <li><i class="fas fa-user mr-2"></i> <a href="mailto:Yuvraj.Patare@mitaoe.ac.in">Yuvraj Patare</a></li>
+                        </ul>
+                        <p class="card-text">Guide: Ms. Kavita S.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script>
+        document.getElementById("input-form").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+            var inputText = document.getElementById('input-text').value;
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: inputText })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Request failed: ' + response.status + ' ' + response.statusText);
+                }
+
+                const responseData = await response.json();
+                document.getElementById("response").innerText = responseData.response;
+            } catch (error) {
+                console.error("Request failed:", error);
+                document.getElementById("response").innerText = "Error: " + error.message;
+            }
+        });
+
+    </script>
+   
+</footer>
+</html>
